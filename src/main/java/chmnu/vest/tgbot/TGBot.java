@@ -1,7 +1,7 @@
 package chmnu.vest.tgbot;
 
 import chmnu.vest.entities.Category;
-import chmnu.vest.parser.CategoriesParser;
+import chmnu.vest.parser.PagesParser;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
@@ -26,7 +26,7 @@ public class TGBot extends TelegramLongPollingBot {
     private Integer start = 0;
     private Integer end = 2;
 
-    private final CategoriesParser parser = new CategoriesParser("https://www.work.ua");;
+    private final PagesParser parser = new PagesParser("https://www.work.ua");
 
     public TGBot(String userName, String token) {
         this.userName = userName;
@@ -56,7 +56,7 @@ public class TGBot extends TelegramLongPollingBot {
 
                     case "Хочу працювати!":
                         try {
-                            customMessage = parser.getCategoriesString();
+                            customMessage = "Готово!";
                             execute(sendInlineKeyBoard(chatId, parser.getCategories()));
                         } catch (IOException | TelegramApiException e) {
                             e.printStackTrace();
@@ -87,13 +87,18 @@ public class TGBot extends TelegramLongPollingBot {
         }
         else if (update.hasCallbackQuery()){
             try {
+                /*
                 execute(new SendMessage().setText(
                         update.getCallbackQuery().getData())
+                        .setChatId(update.getCallbackQuery().getMessage().getChatId()));
+
+                 */
+                execute(new SendMessage().setText(parser.getVacancy(update.getCallbackQuery().getData()))
                         .setChatId(update.getCallbackQuery().getMessage().getChatId()));
                 execute(new AnswerCallbackQuery()
                         .setCallbackQueryId(update.getCallbackQuery().getId())
                         .setShowAlert(false));
-            } catch (TelegramApiException e) {
+            } catch (TelegramApiException | IOException e) {
                 e.printStackTrace();
             }
         }
@@ -138,13 +143,6 @@ public class TGBot extends TelegramLongPollingBot {
             row.add(inlineKeyboardButton);
             rowList.add(row);
         });
-
-        List<InlineKeyboardButton> row2 = new ArrayList<>();
-        InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-        inlineKeyboardButton.setText("Наступні");
-        inlineKeyboardButton.setCallbackData("Наступні категорії");
-        row2.add(inlineKeyboardButton);
-        rowList.add(row2);
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         inlineKeyboardMarkup.setKeyboard(rowList);
