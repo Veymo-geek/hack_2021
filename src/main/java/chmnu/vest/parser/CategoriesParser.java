@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PageParser {
+public class CategoriesParser {
     private final String siteDomain;
 
-    public PageParser(String siteDomain) {
+    public CategoriesParser(String siteDomain) {
         this.siteDomain = siteDomain;
     }
 
@@ -26,7 +26,7 @@ public class PageParser {
         return message.toString();
     }
 
-    private List<Category> getCategories() throws IOException {
+    public List<Category> getCategories() throws IOException {
         Document doc = Jsoup.connect(siteDomain + "/jobs/by-category/").get();
         Elements elements = doc.select("li");
 
