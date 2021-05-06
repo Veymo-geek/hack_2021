@@ -42,20 +42,4 @@ public class PageParser {
         categories.forEach(System.out::println);
         return categories;
     }
-
-    /*
-    public HashMap<String, String> getMapFiles() throws IOException {
-        Document doc = Jsoup.connect(mainPage).get();
-        Elements files = doc.select("a");
-
-        HashMap<String, String> files_ = new HashMap<>();
-        for (Element el : files) {
-            if (el.hasClass("js-navigation-open") && el.attr("title").contains(".csv")) {
-                files_.put(el.attr("title"), siteDomain + el.attr("href"));
-            }
-        }
-
-        return files_;
-    }
-    */
 }

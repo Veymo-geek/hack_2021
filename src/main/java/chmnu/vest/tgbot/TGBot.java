@@ -12,10 +12,12 @@ import java.io.IOException;
 
 public class TGBot extends TelegramLongPollingBot {
 
-    final int RECONNECT_PAUSE =5000;
+    private static final int RECONNECT_PAUSE = 5000;
 
     private final String userName;
     private final String token;
+
+    private final PageParser parser = new PageParser("https://www.work.ua");;
 
     public TGBot(String userName, String token) {
         this.userName = userName;
@@ -41,7 +43,6 @@ public class TGBot extends TelegramLongPollingBot {
                 break;
 
             case "Хочу працювати!":
-                PageParser parser = new PageParser("https://www.work.ua");
                 try {
                     customMessage = parser.getCategoriesString();
                 } catch (IOException e) {
@@ -89,6 +90,7 @@ public class TGBot extends TelegramLongPollingBot {
 
     public void botConnect() {
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+
         try {
             telegramBotsApi.registerBot(this);
             System.out.println("TG API started");

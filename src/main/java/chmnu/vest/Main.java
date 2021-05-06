@@ -1,12 +1,13 @@
-package chmnu.vest.tgbot;
+package chmnu.vest;
 
+import chmnu.vest.tgbot.TGBot;
 import org.telegram.telegrambots.ApiContextInitializer;
 
 public class Main {
     public static void main(String[] args) {
         ApiContextInitializer.init();
-        TGBot test_habr_bot = new TGBot("jobster_chmnu_bot",
+        TGBot tgBot = new TGBot("jobster_chmnu_bot",
                 "1837666964:AAGMG5ThcTTXeUZx4xjLCYCxggmZH74bwW0");
-        test_habr_bot.botConnect();
+        tgBot.botConnect();
     }
 }
