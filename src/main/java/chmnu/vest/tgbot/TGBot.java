@@ -23,9 +23,6 @@ public class TGBot extends TelegramLongPollingBot {
     private final String userName;
     private final String token;
 
-    private Integer start = 0;
-    private Integer end = 2;
-
     private final PagesParser parser = new PagesParser("https://www.work.ua");
 
     public TGBot(String userName, String token) {
@@ -87,12 +84,6 @@ public class TGBot extends TelegramLongPollingBot {
         }
         else if (update.hasCallbackQuery()){
             try {
-                /*
-                execute(new SendMessage().setText(
-                        update.getCallbackQuery().getData())
-                        .setChatId(update.getCallbackQuery().getMessage().getChatId()));
-
-                 */
                 execute(new SendMessage().setText(parser.getVacancy(update.getCallbackQuery().getData()))
                         .setChatId(update.getCallbackQuery().getMessage().getChatId()));
                 execute(new AnswerCallbackQuery()

@@ -2,12 +2,12 @@ package chmnu.vest.entities;
 
 public class Category {
     private final String name;
-    private final String vacancies;
+    private final String category;
     private final String url;
 
     public Category(String name, String vacancies, String url) {
         this.name = name;
-        this.vacancies = vacancies;
+        this.category = vacancies;
         this.url = url;
     }
 
@@ -15,8 +15,8 @@ public class Category {
         return name;
     }
 
-    public String getVacancies() {
-        return vacancies;
+    public String getCategory() {
+        return category;
     }
 
     public String getUrl() {
@@ -25,6 +25,6 @@ public class Category {
 
     @Override
     public String toString() {
-        return name + " (" + vacancies + ")";
+        return name + " (" + category + ")";
     }
 }
