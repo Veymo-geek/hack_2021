@@ -1,11 +1,14 @@
 package chmnu.vest.tgbot;
 
+import chmnu.vest.parser.PageParser;
 import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
+
+import java.io.IOException;
 
 public class TGBot extends TelegramLongPollingBot {
 
@@ -22,17 +25,55 @@ public class TGBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         Long chatId = update.getMessage().getChatId();
-        String inputText = update.getMessage().getText();
 
-        if (inputText.startsWith("/hello")) {
-            SendMessage message = new SendMessage();
-            message.setChatId(chatId);
-            message.setText("Hey, dude. It`s me - JobsterBot :)");
-            try {
-                execute(message);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+        String customMessage = "";
+        SendMessage message = new SendMessage();
+        message.setChatId(chatId);
+
+        switch (update.getMessage().getText()) {
+            case "/start":
+                customMessage = "Привіт, чувак!" + "\n" +
+                                "Хочеш знайти роботу? Без питань!" + "\n" +
+                                "Просто введи 'Хочу працювати!'" + "\n" +
+                                "Також бот підтримує наступні команди:" + "\n" +
+                                "Команди - відображає можливі команди" + "\n" +
+                                "Допомога - відображає корисні посилання" + "\n";
+                break;
+
+            case "Хочу працювати!":
+                PageParser parser = new PageParser("https://www.work.ua");
+                try {
+                    customMessage = parser.getCategoriesString();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case "Команди":
+                customMessage = "Бот підтримує наступні команди:" + "\n" +
+                                "Команди - відображає можливі команди" + "\n" +
+                                "Допомога - відображає корисні посилання" + "\n";
+                break;
+
+            case "Допомога":
+                customMessage = "Автори:" + "\n" +
+                        "@verylonganduselessnicknameforme " + "\n" +
+                        "@Ti_sher" + "\n" +
+                        "@Veymo" + "\n" +
+                        "Кучеренко Егор, який не має посилання :(" + "\n";
+                break;
+
+            default:
+                customMessage = "Я вас не зрозумів :( Використайте команду 'Команди' для довідки!";
+                break;
+
+        }
+        message.setText(customMessage);
+
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
     }
 
