@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,18 +41,20 @@ public class PagesParser {
         Elements elements = doc.select("div");
 
         Vacancy vacancy = null;
+        List<Vacancy> vacancies = new ArrayList<>();
         for (Element el : elements) {
             if (el.hasClass("card card-hover card-visited wordwrap job-link js-hot-block")) {
                 System.out.println(el.html());
                 String name = el.select("h2").select("a").attr("title");
                 String salary = el.select("b").text();
                 String company = el.select("img").attr("alt");
-                String url_ = "";
+                String url_ = siteDomain + el.select("h2").select("a").attr("href");
 
                 vacancy = new Vacancy(name, salary, company, url_);
+                vacancies.add(vacancy);
             }
         }
 
-        return vacancy == null ? "Вакансії не знайдено :(" : vacancy.toString();
+        return vacancy == null ? "Вакансії не знайдено :(" : vacancies.get((int) (Math.random()*vacancies.size())).toString();
     }
 }
